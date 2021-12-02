@@ -28,24 +28,42 @@ function getUsers(url, selector) {
 
 
 /*
-  STEP 4: Pass the data received from Github into your function,
+  ✅ STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+
 getUsers('https://api.github.com/users/j0lib0is', '.cards');
 
 
 /*
-  STEP 5: Now that you have your own card getting added to the DOM, either
-    follow this link in your browser https://api.github.com/users/<Your github name>/followers,
-    manually find some other users' github handles, or use the list found at the
-    bottom of the page. Get at least 5 different Github usernames and add them as
-    Individual strings to the friendsArray below.
+  ✅ STEP 5: Now that you have your own card getting added to the DOM, either
+    follow this link in your browser https://api.github.com/users/<Your github name>/followers, manually find some other users' github handles, or use the list found at the bottom of the page. Get at least 5 different Github usernames and add them as individual strings to the friendsArray below.
 
-    Using that array, iterate over it, requesting data for each user, creating a new card for each
-    user, and adding that card to the DOM.
+    Using that array, iterate over it, requesting data for each user, creating a new card for each user, and adding that card to the DOM.
 */
 
 const followersArray = [];
+
+function findFriends(url) {
+  // fetch user list
+  axios.get(url).then(users => {
+    // add each user's username from the list to the followersArray
+    for (let i = 0; i < users.data.length; i++) {
+      followersArray.push(users.data[i].login);
+    }
+    // for each user in the followersArray, we'll create a user card
+    followersArray.forEach(user => {
+      // generate a url that identifies each user's data object
+      const userData = `https://api.github.com/users/${user}`
+      // use the getUsers function to create user cards
+      getUsers(userData, '.cards');
+    });
+  }).catch(err => {
+    console.log(err);
+  })
+}
+
+findFriends('https://api.github.com/users/brianlovin/followers');
 
 
 /*
