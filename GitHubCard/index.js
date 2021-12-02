@@ -5,9 +5,13 @@ import axios from 'axios';
     https://api.github.com/users/j0lib0is
 */
 
-function getUser() {
-  axios.get('https://api.github.com/users/j0lib0is').then(user => {
-    return makeUserCard(user.data);
+function getUsers(url, selector) {
+  // fetch data
+  axios.get(url).then(user => {
+    // set selector for where you want to store cards
+    const cardContainer = document.querySelector(selector);
+    // use the fetched data to make and append a user card
+    cardContainer.appendChild(makeUserCard(user.data));
   }).catch(err => {
     console.log(err);
   })
@@ -27,6 +31,7 @@ function getUser() {
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+getUsers('https://api.github.com/users/j0lib0is', '.cards');
 
 
 /*
@@ -88,7 +93,7 @@ function makeUserCard({ avatar_url, name, login, location, html_url, followers, 
   userInfo.appendChild(userFollowing);
   userInfo.appendChild(userBio);
   // add classes
-  userProfile.classList.add('card');
+  userCard.classList.add('card');
   userInfo.classList.add('card-info');
   userName.classList.add('name');
   userUsername.classList.add('username');
