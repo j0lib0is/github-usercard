@@ -4,11 +4,14 @@ import axios from 'axios';
     (replacing the placeholder with your Github name):
     https://api.github.com/users/j0lib0is
 */
-axios.get('https://api.github.com/users/j0lib0is').then(response => {
-  console.log(response);
-}).catch(err => {
-  console.log(err);
-})
+
+function getUser() {
+  axios.get('https://api.github.com/users/j0lib0is').then(user => {
+    return makeUserCard(user.data);
+  }).catch(err => {
+    console.log(err);
+  })
+}
 
 
 /*
@@ -19,10 +22,12 @@ axios.get('https://api.github.com/users/j0lib0is').then(response => {
     Skip to STEP 3 (line 34).
 */
 
+
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -37,8 +42,9 @@ axios.get('https://api.github.com/users/j0lib0is').then(response => {
 
 const followersArray = [];
 
+
 /*
-  STEP 3: Create a function that accepts a single object as its only argument.
+  ✅ STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
 
     <div class="card">
@@ -56,6 +62,50 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function makeUserCard({ avatar_url, name, login, location, html_url, followers, following, bio }) {
+  // create DOM elements
+  const userCard = document.createElement('div');
+  const userAvatar = document.createElement('img');
+  const userInfo = document.createElement('div');
+  const userName = document.createElement('h3');
+  const userUsername = document.createElement('p');
+  const userLocation = document.createElement('p');
+  const userProfile = document.createElement('p');
+  const userGithub = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
+  // build element
+  userCard.appendChild(userAvatar);
+  userCard.appendChild(userInfo);
+  userInfo.appendChild(userName);
+  userInfo.appendChild(userUsername);
+  userInfo.appendChild(userLocation);
+  userInfo.appendChild(userProfile);
+  userProfile.appendChild(userGithub);
+  userInfo.appendChild(userFollowers);
+  userInfo.appendChild(userFollowing);
+  userInfo.appendChild(userBio);
+  // add classes
+  userProfile.classList.add('card');
+  userInfo.classList.add('card-info');
+  userName.classList.add('name');
+  userUsername.classList.add('username');
+  // add content
+  userAvatar.src = avatar_url;
+  userName.textContent = name;
+  userUsername.textContent = login;
+  userLocation.textContent = `Location: ${location}`;
+  userProfile.textContent = `Profile: ${userGithub}`;
+  userGithub.href = html_url;
+  userFollowers.textContent = `Followers: ${followers}`;
+  userFollowing.textContent = `Followers: ${following}`;
+  userBio.textContent = bio;
+  // return object
+  return userCard;
+}
+
 
 /*
   List of LS Instructors Github username's:
